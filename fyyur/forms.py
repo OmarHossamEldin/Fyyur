@@ -3,7 +3,7 @@ import babel
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SubmitField, BooleanField, TextAreaField, SelectField, DateTimeField
-from wtforms.validators import DataRequired, AnyOf, URL , Length, Optional
+from wtforms.validators import DataRequired, URL, Optional
 
 class ShowForm(Form):
     artist_id = StringField(
@@ -22,20 +22,10 @@ class ShowForm(Form):
 class VenueForm(Form):
     name = StringField(
         'name', 
-        validators=[DataRequired(),
-        Length(min=10)
-        ]
-    )
-    address = StringField(
-        'address',
-        validators=[DataRequired(),
-        Length(min=10, max=25)
-        ]
+        validators=[DataRequired()]
     )
     city = StringField(
-        'city', validators=[DataRequired(),
-        Length(min=3, max=25)
-        ]
+        'city', validators=[DataRequired()]
     )
     state = SelectField(
         'state', validators=[DataRequired()],
@@ -93,10 +83,13 @@ class VenueForm(Form):
             ('WY', 'WY'),
         ]
     )
+    address = StringField(
+        'address',
+        validators=[DataRequired()]
+    )
     phone = StringField(
         'phone',
         validators=[DataRequired(),
-        Length(max=12)
         ]
     )
     seeking_talent = BooleanField(
@@ -124,21 +117,17 @@ class VenueForm(Form):
         validators=[Optional()]
     )
     genres = StringField(
-        'genres', validators=[DataRequired(),
-        Length(min=4)
+        'genres', validators=[DataRequired()
         ],
     ) 
     submit = SubmitField('New Venue') 
 
 class ArtistForm(Form):
     name = StringField(
-        'name', validators=[DataRequired(),
-        Length(min=10)
-        ]
+        'name', validators=[DataRequired()]
     )
     city = StringField(
-        'city', validators=[DataRequired(),
-        Length(min=3, max=25)]
+        'city', validators=[DataRequired()]
     )
     state = SelectField(
         'state', validators=[DataRequired()],
@@ -198,9 +187,7 @@ class ArtistForm(Form):
     )
     phone = StringField(
         'phone',
-        validators=[DataRequired(),
-        Length(max=12)
-        ]
+        validators=[DataRequired()]
     )
     seeking_venue =BooleanField(
         'seeking_venue',

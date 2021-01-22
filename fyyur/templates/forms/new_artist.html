@@ -1,38 +1,138 @@
 {% extends 'layouts/main.html' %}
-{% block title %}New Artist{% endblock %}
 {% block content %}
-  <div class="form-wrapper">
-    <form method="post" class="form">
-      <h3 class="form-heading">List a new artist</h3>
-      <div class="form-group">
-        <label for="name">Name</label>
-        {{ form.name(class_ = 'form-control', autofocus = true) }}
-      </div>
-      <div class="form-group">
-          <label>City & State</label>
-          <div class="form-inline">
-            <div class="form-group">
-              {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true) }}
-            </div>
-            <div class="form-group">
-              {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true) }}
-            </div>
+<div class="form-wrapper">
+  <form method="post" class="form" action="">
+    {{ form.hidden_tag() }}
+    <h3 class="form-heading">Create A New Artist <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    <hr>
+    <div class="form-group">
+      <label for="name">Name</label>
+      {% if form.name.errors %}
+          {{ form.name(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.name.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
           </div>
-      </div>
-      <div class="form-group">
-          <label for="phone">Phone</label>
-          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+      {% else %}
+          {{ form.name(class_= 'form-control', autofocus = true,) }}
+      {% endif %}
+    </div>
+    <div class="form-group">
+        <label>City & State</label>
+        <div class="form-inline">
+          <div class="form-group">
+          {% if form.city.errors %}
+            {{ form.city(class_= 'form-control', autofocus = true) }}
+            <div class='invalid-feedback'>
+             {% for error in form.city.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+            </div>
+          {% else %}
+            {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true) }}
+          {% endif %}
+          </div>
+          <div class="form-group">
+          {% if form.state.errors %}
+            {{ form.state(class_= 'form-control', autofocus = true) }}
+            <div class='invalid-feedback'>
+             {% for error in form.state.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+            </div>
+          {% else %}
+          {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true) }}
+          {% endif %}
+          </div>
         </div>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      {% if form.phone.errors %}
+        {{ form.phone(class_ = 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.phone.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+      {% else %}
+         {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+      {% endif %}
+    </div>
+    <div class="form-group">
       <div class="form-group">
-        <label for="genres">Genres</label>
-        <small>Ctrl+Click to select multiple</small>
-        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id=form.state, autofocus = true) }}
+        <label for="seekingtalent">Seeking Venue</label><br>
+        {{ form.seeking_venue(class_ = 'form-check-input') }}
       </div>
-      <div class="form-group">
-          <label for="genres">Facebook Link</label>
-          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
-        </div>
-      <input type="submit" value="Create Venue" class="btn btn-primary btn-lg btn-block">
-    </form>
+    </div>
+    <div class="form-group">
+      <label for="website">Website</label>
+      {% if form.website.errors %}
+          {{ form.website(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.website.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+        {% else %}
+          {{ form.website(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="facebooklink">Facebook</label>
+      {% if form.facebook_link.errors %}
+          {{ form.facebook_link(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.facebook_link.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+      {% else %}
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+      {% endif %}
   </div>
+  <div class="form-group">
+      <label for="imagelink">Image</label>
+      {% if form.image_link.errors %}
+          {{ form.image_link(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.image_link.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+      {% else %}
+          {{ form.image_link(class_ = 'form-control', placeholder='http://',  autofocus = true) }}
+      {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="seekingdescription">Description</label>
+    {% if form.seeking_description.errors %}
+          {{ form.seeking_description(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.seeking_description.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+      {% else %}
+        {{ form.seeking_description(class_ = 'form-control', placeholder='description', autofocus = true) }}
+      {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="genres">Genres</label>
+    <small>seprate all added Genres using (-) to add more than genre</small>
+    {% if form.genres.errors %}
+          {{ form.genres(class_= 'form-control', autofocus = true) }}
+          <div class='invalid-feedback'>
+             {% for error in form.genres.errors %}
+                <span class='text-danger' >{{ error }}</span>
+             {% endfor %}
+          </div>
+    {% else %}
+      {{ form.genres(class_ = 'form-control', placeholder='genres', autofocus = true) }}
+    {% endif %}
+  </div>
+  {{ form.submit(class_ = 'btn btn-primary btn-lg btn-block') }}
+  </form>
+</div>
 {% endblock %}

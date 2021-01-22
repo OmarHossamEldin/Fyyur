@@ -1,31 +1,25 @@
 from fyyur import db
 
 
-# time zone for creationTime
-from datetime import datetime
-import pytz
-tz = pytz.timezone('Africa/Cairo')
-ct = datetime.now(tz=tz)
-#time zone for creationTime
 
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
 
 GenreVenue = db.Table(
-  'GenreVenue',
-  db.Column('venue_id', db.Integer, db.ForeignKey('Venue.id'), primary_key=True, nullable=False),
-  db.Column('genra_id', db.Integer, db.ForeignKey('Genre.id'), primary_key=True, nullable=False)
+  'genre_venue',
+  db.Column('venue_id', db.Integer, db.ForeignKey('venues.id'), primary_key=True, nullable=False),
+  db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'), primary_key=True, nullable=False)
 )
 
 ArtistGenre = db.Table(
-  'ArtistGenre',
-  db.Column('artist_id', db.Integer, db.ForeignKey('Artist.id'), primary_key=True, nullable=False),
-  db.Column('genre_id', db.Integer, db.ForeignKey('Genre.id'), primary_key=True, nullable=False)
+  'artist_genre',
+  db.Column('artist_id', db.Integer, db.ForeignKey('artists.id'), primary_key=True, nullable=False),
+  db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'), primary_key=True, nullable=False)
 )
 
 class Venue(db.Model):
-    __tablename__ = 'Venue'
+    __tablename__ = 'venues'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -39,13 +33,13 @@ class Venue(db.Model):
     image_link = db.Column(db.String(500), default='https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60')
     seeking_description = db.Column(db.Text,nullable=True)
     genres = db.relationship('Genre', secondary=GenreVenue,backref=db.backref('Venue', lazy=True))
-    shows = db.relationship('Show', backref='hasShows', lazy=True)
-    created_at =db.Column(db.DateTime, nullable=False, default=ct)
-    updated_at =db.Column(db.DateTime, nullable=False, default=ct)
+    shows = db.relationship('Show', backref='Show', lazy=True)
+    created_at =db.Column(db.DateTime, nullable=True,)
+    updated_at =db.Column(db.DateTime, nullable=True,)
     
 
 class Artist(db.Model):
-    __tablename__ = 'Artist'
+    __tablename__ = 'artists'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -59,25 +53,25 @@ class Artist(db.Model):
     seeking_description = db.Column(db.Text,nullable=True)
     shows = db.relationship('Show', backref='hasShows', lazy=True)
     genres = db.relationship('Genre', secondary=ArtistGenre,backref=db.backref('Artist', lazy=True))
-    created_at =db.Column(db.DateTime, nullable=False, default=ct)
-    updated_at =db.Column(db.DateTime, nullable=False, default=ct)
+    created_at =db.Column(db.DateTime, nullable=True,)
+    updated_at =db.Column(db.DateTime, nullable=True,)
     
 
 class Show(db.Model):
-  __tablename__ = 'Show'
+  __tablename__ = 'shows'
   
   id = db.Column(db.Integer, primary_key=True)
-  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
-  venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
+  artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
+  venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'), nullable=False)
   start_time = db.Column(db.DateTime, nullable=True)
-  shows = db.relationship('Show', backref='hasShows', lazy=True)
-  created_at =db.Column(db.DateTime, nullable=False, default=ct)
-  updated_at =db.Column(db.DateTime, nullable=False, default=ct)
+  created_at =db.Column(db.DateTime, nullable=True,)
+  updated_at =db.Column(db.DateTime, nullable=True,)
 
 
-class Genres(db.Model):
-  __tablename__ = 'Genre'
+class Genre(db.Model):
+  __tablename__ = 'genres'
 
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String)
-
+  created_at =db.Column(db.DateTime, nullable=True,)
+  updated_at =db.Column(db.DateTime, nullable=True,)
