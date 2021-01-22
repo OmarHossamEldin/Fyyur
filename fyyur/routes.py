@@ -1,8 +1,8 @@
 
 from fyyur import app
 from flask import render_template, request, Response, flash, redirect, url_for
-from flask_wtf import Form
 from fyyur.forms import *
+from fyyur.models import *
 #----------------------------------------------------------------------------#
 # Filters.
 #----------------------------------------------------------------------------#
@@ -24,7 +24,6 @@ app.jinja_env.filters['datetime'] = format_datetime
 @app.route('/')
 def index():
   return render_template('pages/home.html')
-
 
 #  Venues
 #  ----------------------------------------------------------------
