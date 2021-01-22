@@ -10,6 +10,13 @@
 			ID: {{ artist.id }}
 		</p>
 		<div class="genres">
+			<a class="btn btn-primary sm" href="{{url_for('edit_artist', artist_id = artist.id)}}">EDIT</a> :: 
+			<form style="display: inline-block;" action="{{url_for('delete_artist', artist_id = artist.id)}}" method="post">
+				<input type="hidden" name='__method' value="DELETE">
+				<button type="submit" class="btn btn-danger sm" ><i class="fa fa-trash-alt"></i> DELETE</button>
+			</form>
+		</div>
+		<div class="genres">
 			{% for genre in artist.genres %}
 			<span class="genre">{{ genre }}</span>
 			{% endfor %}
