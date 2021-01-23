@@ -22,7 +22,7 @@ class Venue(db.Model):
     __tablename__ = 'venues'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String,unique=True)
+    name = db.Column(db.String)
     address = db.Column(db.String(120))
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
@@ -33,7 +33,7 @@ class Venue(db.Model):
     image_link = db.Column(db.String(500), default='https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60')
     seeking_description = db.Column(db.Text,nullable=True)
     genres = db.relationship('Genre', secondary=GenreVenue,backref=db.backref('Venue', lazy=True))
-    shows = db.relationship('Show', backref='Show', lazy=True)
+    shows = db.relationship('Show', backref='Venue', lazy=True)
     created_at =db.Column(db.DateTime, nullable=True,)
     updated_at =db.Column(db.DateTime, nullable=True,)
     
@@ -42,7 +42,7 @@ class Artist(db.Model):
     __tablename__ = 'artists'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String,unique=True)
+    name = db.Column(db.String)
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     phone = db.Column(db.String(120),nullable=True)
@@ -51,7 +51,7 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
     image_link = db.Column(db.String(500), default='https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80')
     seeking_description = db.Column(db.Text,nullable=True)
-    shows = db.relationship('Show', backref='hasShows', lazy=True)
+    shows = db.relationship('Show', backref='Artist', lazy=True)
     genres = db.relationship('Genre', secondary=ArtistGenre,backref=db.backref('Artist', lazy=True))
     created_at =db.Column(db.DateTime, nullable=True,)
     updated_at =db.Column(db.DateTime, nullable=True,)
