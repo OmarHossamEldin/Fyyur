@@ -61,53 +61,31 @@ def search_venues():
 
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
-  venues = Venue.query.get_or_404(venue_id)
-  genres = []
-  current_time = datetime.now()
-  past_shows = []
-  past_shows_count = 0
-  upcoming_shows = []
-  upcoming_shows_count = 0  
+  venue = Venue.query.get_or_404(venue_id)
+
+  upComingShows = db.session.query(Venue.id,Artist.id,Artist.image_link,Artist.name, Show.start_time,db.func.count(Show.start_time)).join(
+    Show,Venue.id == Show.venue_id and Show.start_time > datetime.now()).join(Artist, Artist.id == Show.artist_id ).group_by(
+      Venue.id, Artist.id, Show.start_time).filter(Venue.id == venue_id).all()
+  
+  pastComingShows = db.session.query(Venue.id,Artist.id, Artist.image_link, Artist.name, Show.start_time, db.func.count(Show.start_time)).join(
+    Show,Venue.id == Show.venue_id and Show.start_time > datetime.now()).join(Artist, Artist.id == Show.artist_id ).group_by(
+      Venue.id, Artist.id, Show.start_time).filter(Venue.id == venue_id).all()
+  
+  upResult = []
+  upCounts = 0
+  pastResult = []
+  pastCounts = 0
+   
+  for show in upComingShows:
+    upResult.append(show)
+    upCounts += show[5]
+  for show in pastComingShows:
+    pastResult.append(show)
+    pastCounts +=show[5]
+
+  data = {'venue': venue, 'upResult':upResult, 'upCounts':upCounts, 'pastResult':pastResult,'pastCounts':pastCounts}
     
-  for genre in venues.genres:
-    genres.append(genre.name)
-    
-  for show in venues.shows:
-      if show.start_time >= current_time:
-        upcoming_shows_count += 1
-        upcoming_shows.append({
-          "artist_id":show.artist_id,
-          "artist_name":show.artist.name,
-          "start_time":format_datetime(str(show.start_time)),
-          "artist_image_link":show.artist.image_link
-        })
-      elif show.start_time < current_time:
-        past_shows_count += 1
-        past_shows.append({
-          "artist_id": show.artist_id,
-          "artist_name": show.artist.name,
-          "start_time": format_datetime(str(show.start_time)),
-          "artist_image_link": show.artist.image_link
-        })  
-  data = {
-            "id": venues.id,
-            "name": venues.name,
-            "city": venues.city,
-            "state": venues.state,          
-            "address": venues.address,
-            "phone": venues.phone,
-            "image_link": venues.image_link,
-            "facebook_link": venues.facebook_link,
-            "website": venues.website,
-            "seeking_talent": venues.seeking_talent,
-            "seeking_description": venues.seeking_description,
-            "genres": genres,
-            "past_shows": past_shows,
-            "past_shows_count": past_shows_count,
-            "upcoming_shows": upcoming_shows,
-            "upcoming_shows_count": upcoming_shows_count          
-  }  
-  return render_template('pages/show_venue.html',title = 'Venue Search', venue=data)
+  return render_template('pages/show_venue.html',title = 'Venue', data=data)
 
 #  Create Venue
 #  ----------------------------------------------------------------
@@ -203,50 +181,30 @@ def search_artists():
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   artist = Artist.query.get_or_404(artist_id)
-  genres = []
-  current_time = datetime.now()
-  past_shows = []
-  past_shows_count = 0
-  upcoming_shows = []
-  upcoming_shows_count = 0  
-  for genre in artist.genres:
-      genres.append(genre.name)
 
-  for show in artist.shows:
-      if show.start_time >= current_time:
-        upcoming_shows_count += 1
-        upcoming_shows.append({
-          "artist_id":show.artist_id,
-          "artist_name":show.Artist.name,
-          "start_time":format_datetime(str(show.start_time)),
-          "artist_image_link":show.Artist.image_link
-        })
-      elif show.start_time < current_time:
-        past_shows_count += 1
-        past_shows.append({
-          "artist_id": show.artist_id,
-          "artist_name": show.Artist.name,
-          "start_time": format_datetime(str(show.start_time)),
-          "artist_image_link": show.Artist.image_link
-        })  
-  data ={
-          "id": artist.id,
-          "name": artist.name,
-          "city": artist.city,
-          "state": artist.state,          
-          "phone": artist.phone,
-          "image_link": artist.image_link,
-          "facebook_link": artist.facebook_link,
-          "website": artist.website,
-          "seeking_venue": artist.seeking_venue,
-          "seeking_description": artist.seeking_description,
-          "genres": genres,
-          "past_shows": past_shows,
-          "past_shows_count": past_shows_count,
-          "upcoming_shows": upcoming_shows,
-          "upcoming_shows_count": upcoming_shows_count          
-  }
-  return render_template('pages/show_artist.html', artist=data)
+  upComingShows = db.session.query(Artist.id,Venue.id,Venue.image_link,Venue.name, Show.start_time,db.func.count(Show.start_time)).join(
+    Show,Venue.id == Show.venue_id and Show.start_time > datetime.now()).join(Artist, Artist.id == Show.artist_id ).group_by(
+      Venue.id, Artist.id, Show.start_time).filter(Artist.id == artist_id).all()
+  
+  pastComingShows = db.session.query(Artist.id,Venue.id,Venue.image_link,Venue.name, Show.start_time,db.func.count(Show.start_time)).join(
+    Show,Venue.id == Show.venue_id and Show.start_time < datetime.now()).join(Artist, Artist.id == Show.artist_id ).group_by(
+      Venue.id, Artist.id, Show.start_time).filter(Artist.id == artist_id).all()
+  
+  upResult = []
+  upCounts = 0
+  pastResult = []
+  pastCounts = 0
+   
+  for show in upComingShows:
+    upResult.append(show)
+    upCounts += show[5]
+  for show in pastComingShows:
+    pastResult.append(show)
+    pastCounts +=show[5]
+
+  data = {'artist': artist, 'upResult':upResult, 'upCounts':upCounts, 'pastResult':pastResult,'pastCounts':pastCounts}
+    
+  return render_template('pages/show_artist.html', title = 'Artist', data=data)
 
 #  Update
 #  ----------------------------------------------------------------
