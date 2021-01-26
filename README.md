@@ -54,7 +54,7 @@ npm install bootstrap@3
   ```sh
   ├── README.md
   ├── run.py *** the main driver of the app. Includes your SQLAlchemy models.
-                    "python app.py" to run after installing dependences
+                    "python run.py" to run after installing dependences
   ├── requirements.txt *** The dependencies we need to install with "pip3 install -r requirements.txt"
   ├── config.py *** Database URLs, CSRF generation, etc
   ├── migrations*** Database versions.
