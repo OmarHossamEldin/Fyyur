@@ -53,23 +53,30 @@ npm install bootstrap@3
 
   ```sh
   ├── README.md
-  ├── app.py *** the main driver of the app. Includes your SQLAlchemy models.
+  ├── run.py *** the main driver of the app. Includes your SQLAlchemy models.
                     "python app.py" to run after installing dependences
-  ├── config.py *** Database URLs, CSRF generation, etc
-  ├── error.log
-  ├── forms.py *** Your forms
   ├── requirements.txt *** The dependencies we need to install with "pip3 install -r requirements.txt"
-  ├── static
-  │   ├── css 
-  │   ├── font
-  │   ├── ico
-  │   ├── img
-  │   └── js
-  └── templates
-      ├── errors
-      ├── forms
-      ├── layouts
-      └── pages
+  ├── config.py *** Database URLs, CSRF generation, etc
+  ├── migrations*** Database versions.
+  │   ├── versions 
+  │   ├── README
+  │   ├── alembic.ini
+  │   ├── env.py
+  └────── script.py.mako
+  ├── fyyur
+  │   ├── error.log
+  │   ├── forms.py *** Your forms
+  │   ├── static
+  │   │   ├── css 
+  │   │   ├── font
+  │   │   ├── ico
+  │   │   ├── img
+  │   │   └── js
+  │   └── templates
+  │   ├── errors
+  │   ├── forms
+  │   ├── layouts
+  └───└── pages
   ```
 
 Overall:
