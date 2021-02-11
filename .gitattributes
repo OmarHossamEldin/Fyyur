@@ -2,7 +2,7 @@
 * text=auto
 *.css linguist-vendored
 *.js linguist-vendored
-*.py linguist-vendored
+*.python linguist-vendored
 CHANGELOG.md export-ignore
 *.css linguist-detectable=false
 *.js linguist-detectable=false
